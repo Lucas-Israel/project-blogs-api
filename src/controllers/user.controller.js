@@ -1,6 +1,7 @@
 const { userService } = require('../services/index');
 const { validateUser } = require('./utils/validadeUser');
 const { validateCredentials } = require('./utils/validateCredentials');
+const { mapError } = require('../utils/errorMap');
 
 const login = async (req, res, next) => {
   const { error } = validateCredentials(req.body);
@@ -33,13 +34,24 @@ const createUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  const result = await userService.getUsers();
+  const { type, message } = await userService.getUsers();
 
-  res.status(200).json(result);
+  if (type) return res.status(mapError(type)).json({ message: 'User not found' });
+
+  res.status(200).json(message);
+};
+
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  const { type, message } = await userService.findUserById(id);
+
+  if (type) return res.status(mapError(type)).json({ message: 'User does not exist' });
+  res.status(200).json(message);
 };
 
 module.exports = {
   login,
   createUser,
   getUsers,
+  getUserById,
 };

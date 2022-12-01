@@ -16,7 +16,7 @@ const login = async (email, password) => {
   }
 
   const token = jwt.sign({ email }, JWT_SECRET, { 
-    expiresIn: '1h',
+    expiresIn: '7D',
   });
 
   return { token };
@@ -34,7 +34,7 @@ const createUser = async ({ displayName, email, password, image }) => {
     image,
   });
 
-  const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '7D' });
 
   return { token };
 };
@@ -42,12 +42,12 @@ const createUser = async ({ displayName, email, password, image }) => {
 const getUsers = async () => {
   const result = await User.findAll();
 
-  const abc = result.map((ele) => {
+  const resultNoPw = result.map((ele) => {
     const { password, ...others } = ele.dataValues;
     return { password: undefined, ...others };
   });
 
-  return abc;
+  return { type: null, message: resultNoPw };
 };
 
 const findUser = async (email) => {
@@ -60,9 +60,22 @@ const findUser = async (email) => {
   return { password: undefined, ...others };
 };
 
+const findUserById = async (id) => {
+  const result = await User.findOne({
+    where: { id },
+  });
+
+  if (!result) return { type: 'USER_NOT_FOUND', message: result };
+
+  result.dataValues.password = undefined;
+
+  return { type: null, message: result };
+};
+
 module.exports = {
   login,
   createUser,
   getUsers,
   findUser,
+  findUserById,
 };

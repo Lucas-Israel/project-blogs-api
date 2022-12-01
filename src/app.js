@@ -1,5 +1,6 @@
 const express = require('express');
 const { userController } = require('./controllers');
+const { tokenValidation } = require('./middlewares');
 
 // ...
 
@@ -9,6 +10,7 @@ app.use(express.json());
 
 app.post('/login', userController.login);
 app.post('/user', userController.createUser);
+app.get('/user', tokenValidation, userController.getUsers);
 
 // ...
 

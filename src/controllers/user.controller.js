@@ -32,7 +32,14 @@ const createUser = async (req, res) => {
   res.status(201).json({ token: result.token });
 };
 
+const getUsers = async (req, res) => {
+  const result = await userService.getUsers();
+
+  res.status(200).json(result);
+};
+
 module.exports = {
   login,
   createUser,
+  getUsers,
 };

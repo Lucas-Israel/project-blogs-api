@@ -39,7 +39,30 @@ const createUser = async ({ displayName, email, password, image }) => {
   return { token };
 };
 
+const getUsers = async () => {
+  const result = await User.findAll();
+
+  const abc = result.map((ele) => {
+    const { password, ...others } = ele.dataValues;
+    return { password: undefined, ...others };
+  });
+
+  return abc;
+};
+
+const findUser = async (email) => {
+  const result = await User.findOne({
+    where: { email },
+  });
+
+  const { password, ...others } = result.dataValues;
+
+  return { password: undefined, ...others };
+};
+
 module.exports = {
   login,
   createUser,
+  getUsers,
+  findUser,
 };

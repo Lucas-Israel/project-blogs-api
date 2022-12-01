@@ -1,6 +1,5 @@
 const { userService } = require('../services/index');
-const { validateUser } = require('./utils/validadeUser');
-const { validateCredentials } = require('./utils/validateCredentials');
+const { validateCredentials, validateUser } = require('./utils/validations');
 const { mapError } = require('../utils/errorMap');
 
 const login = async (req, res, next) => {

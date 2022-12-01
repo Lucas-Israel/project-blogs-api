@@ -1,5 +1,5 @@
 const express = require('express');
-const { userController } = require('./controllers');
+const { userController, categoryController } = require('./controllers');
 const { tokenValidation } = require('./middlewares');
 
 // ...
@@ -12,6 +12,7 @@ app.post('/login', userController.login);
 app.post('/user', userController.createUser);
 app.get('/user', tokenValidation, userController.getUsers);
 app.get('/user/:id', tokenValidation, userController.getUserById);
+app.post('/categories', tokenValidation, categoryController.createCategory);
 
 // ...
 

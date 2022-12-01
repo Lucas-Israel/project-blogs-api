@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+const BlogPost = (sequelize, DataTypes) => {
   const BlogPost = sequelize.define('BlogPost', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: DataTypes.STRING,
@@ -14,3 +14,5 @@ module.exports = (sequelize, DataTypes) => {
 
   return BlogPost;
 };
+
+module.exports = BlogPost;

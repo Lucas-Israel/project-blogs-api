@@ -12,7 +12,19 @@ const getAll = async () => {
   return { type: null, message: result };
 };
 
+const findByIdList = async (list) => {
+  const listing = await Promise.all(list.map((id) => {
+    const result = Category.findByPk(id);
+    return result;
+  }));
+
+  if (listing.some((ele) => ele === null)) return { type: 'NOT_FOUND' };
+
+  return { type: null, message: listing };
+};
+
 module.exports = {
   createCategory,
   getAll,
+  findByIdList,
 };

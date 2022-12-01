@@ -1,5 +1,5 @@
-const error = require('./error');
+const tokenValidation = require('./tokenValidation');
 
 module.exports = {
-  error,
+  tokenValidation,
 };

@@ -76,9 +76,29 @@ const updatePost = async (token, id, { title, content }) => {
   return result;
 };
 
+const deletePost = async (token, id) => {
+  const doesExist = await getPostById(id);
+
+  if (doesExist.type) return { type: 'NOT_FOUND', message: 'Post does not exist' };
+
+  const verify = jwt.verify(token, JWT_SECRET);
+  const user = await findUser(verify.email);
+
+  const { message: { dataValues: { userId } } } = await getPostById(id);
+
+  if (userId !== user.id) return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+
+  const result = await BlogPost.destroy({
+    where: { id },
+  });
+
+  return { type: null, message: result };
+};
+
 module.exports = {
   createBlogPost,
   getPost,
   getPostById,
   updatePost,
+  deletePost,
 };

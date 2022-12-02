@@ -37,8 +37,6 @@ const getPostById = async (req, res) => {
 const updatePost = async (req, res) => {
   const { error } = validateUpdate(req.body);
 
-  console.log(error);
-
   if (error) return res.status(400).json({ message: error.message }); 
 
   const token = req.header('Authorization');
@@ -51,9 +49,20 @@ const updatePost = async (req, res) => {
   res.status(200).json(message);
 };
 
+const deletePost = async (req, res) => {
+  const { id } = req.params;
+  const token = req.header('Authorization');
+  const { type, message } = await blogPostService.deletePost(token, id);
+
+  if (type) return res.status(mapError(type)).json({ message });
+
+  res.status(204).json(message);
+};
+
 module.exports = {
   createBlogPost,
   getPost,
   getPostById,
   updatePost,
+  deletePost,
 };

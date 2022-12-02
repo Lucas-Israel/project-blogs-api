@@ -8,6 +8,7 @@ const app = express();
 
 app.use(express.json());
 
+app.get('/post/search', tokenValidation, blogPostController.postSearch);
 app.post('/login', userController.login);
 app.post('/user', userController.createUser);
 app.get('/user', tokenValidation, userController.getUsers);

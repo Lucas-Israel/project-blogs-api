@@ -95,10 +95,23 @@ const deletePost = async (token, id) => {
   return { type: null, message: result };
 };
 
+const postSearch = async (q) => {
+  const { or, like } = Sequelize.Op;
+  const result = await BlogPost.findAll({
+    where: { [or]: [{ title: { [like]: `%${q}%` } }, { content: { [like]: `%${q}%` } }] },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: 'password' } },
+      { model: Category, as: 'categories' },
+    ],
+  });
+  return { type: null, message: result };
+};
+
 module.exports = {
   createBlogPost,
   getPost,
   getPostById,
   updatePost,
   deletePost,
+  postSearch,
 };

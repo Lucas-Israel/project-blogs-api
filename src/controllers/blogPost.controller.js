@@ -1,6 +1,7 @@
 const { blogPostService } = require('../services');
 const { validateBlogPost } = require('./utils/validations');
 const { categoryService } = require('../services');
+const { mapError } = require('../utils/errorMap');
 
 const createBlogPost = async (req, res) => {
   const { error } = validateBlogPost(req.body);
@@ -24,7 +25,17 @@ const getPost = async (req, res) => {
   res.status(200).json(message);
 };
 
+const getPostById = async (req, res) => {
+  const { id } = req.params;
+  const { type, message } = await blogPostService.getPostById(id);
+
+  if (type) return res.status(mapError(type)).json({ message });
+
+  res.status(200).json(message);
+};
+
 module.exports = {
   createBlogPost,
   getPost,
+  getPostById,
 };

@@ -1,5 +1,6 @@
 const errorMap = {
   USER_NOT_FOUND: 404,
+  NOT_FOUND: 404,
   INVALID_VALUE: 400,
   UNP_ENTITY: 422,
 };

@@ -72,10 +72,20 @@ const findUserById = async (id) => {
   return { type: null, message: result };
 };
 
+const deleteUser = async (token) => {
+  const verify = jwt.verify(token, JWT_SECRET);
+  const user = await findUser(verify.email);
+  const result = await User.destroy({
+    where: { id: user.id },
+  });
+  return { type: null, message: result };
+};
+
 module.exports = {
   login,
   createUser,
   getUsers,
   findUser,
   findUserById,
+  deleteUser,
 };

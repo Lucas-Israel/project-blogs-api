@@ -58,8 +58,27 @@ const getPostById = async (id) => {
   return { type: null, message: result };
 };
 
+const updatePost = async (token, id, { title, content }) => {
+  const verify = jwt.verify(token, JWT_SECRET);
+  const user = await findUser(verify.email);
+
+  const { message: { dataValues: { userId } } } = await getPostById(id);
+
+  if (userId !== user.id) return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+
+  await BlogPost.update(
+      { title, content },
+      { where: { id } },
+  );
+
+  const result = await getPostById(id);
+
+  return result;
+};
+
 module.exports = {
   createBlogPost,
   getPost,
   getPostById,
+  updatePost,
 };

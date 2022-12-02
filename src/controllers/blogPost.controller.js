@@ -1,5 +1,5 @@
 const { blogPostService } = require('../services');
-const { validateBlogPost } = require('./utils/validations');
+const { validateBlogPost, validateUpdate } = require('./utils/validations');
 const { categoryService } = require('../services');
 const { mapError } = require('../utils/errorMap');
 
@@ -34,8 +34,26 @@ const getPostById = async (req, res) => {
   res.status(200).json(message);
 };
 
+const updatePost = async (req, res) => {
+  const { error } = validateUpdate(req.body);
+
+  console.log(error);
+
+  if (error) return res.status(400).json({ message: error.message }); 
+
+  const token = req.header('Authorization');
+  const { id } = req.params;
+  const { title, content } = req.body;
+  const { type, message } = await blogPostService.updatePost(token, id, { title, content });
+
+  if (type) return res.status(mapError(type)).json({ message });
+
+  res.status(200).json(message);
+};
+
 module.exports = {
   createBlogPost,
   getPost,
   getPostById,
+  updatePost,
 };

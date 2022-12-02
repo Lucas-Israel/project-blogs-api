@@ -17,6 +17,7 @@ app.get('/categories', tokenValidation, categoryController.getAll);
 app.post('/post', tokenValidation, blogPostController.createBlogPost);
 app.get('/post', tokenValidation, blogPostController.getPost);
 app.get('/post/:id', tokenValidation, blogPostController.getPostById);
+app.put('/post/:id', tokenValidation, blogPostController.updatePost);
 
 // ...
 

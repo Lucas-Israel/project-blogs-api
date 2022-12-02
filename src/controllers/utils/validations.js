@@ -58,9 +58,19 @@ const validateBlogPost = (body) =>
     }),
   }).validate(body);
 
+const validateUpdate = (body) =>
+  Joi.object({
+    title: Joi.string().required(),
+    content: Joi.string().required(),
+  }).messages({
+    'string.empty': FIELDS_MISSING,
+    'any.required': FIELDS_MISSING,
+  }).validate(body);
+
 module.exports = {
   validateCredentials,
   validateUser,
   validateCategories,
   validateBlogPost,
+  validateUpdate,
 };

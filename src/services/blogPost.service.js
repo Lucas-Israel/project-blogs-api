@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const Sequelize = require('sequelize');
-const { BlogPost, PostCategory } = require('../models'); 
+const { BlogPost, PostCategory, User, Category } = require('../models'); 
 const { findUser } = require('./user.service');
 
 const { JWT_SECRET } = process.env;
@@ -33,6 +33,18 @@ const createBlogPost = async (token, { title, content, categoryIds }) => {
   }
 };
 
+const getPost = async () => {
+  const result = await BlogPost.findAll(
+    { include: [
+      { model: User, as: 'user', attributes: { exclude: 'password' } },
+      { model: Category, as: 'categories' },
+    ] },
+  );
+
+  return { type: null, message: result };
+};
+
 module.exports = {
   createBlogPost,
+  getPost,
 };

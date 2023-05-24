@@ -22,7 +22,7 @@ const login = async (email, password) => {
   return { token };
 };
 
-const createUser = async ({ displayName, email, password, image }) => {
+const createUser = async ({ displayName, email, password, image = '' }) => {
   const searching = await User.findOne({ where: { email } });
 
   if (searching) return { error: { code: 409, message: 'User already registered' } };
